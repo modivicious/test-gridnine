@@ -1,0 +1,15 @@
+.caption {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.airline {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  max-width: 100px;
+  margin-right: 5px;
+  overflow: hidden;
+  white-space: pre-wrap;
+}

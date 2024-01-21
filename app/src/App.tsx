@@ -1,7 +1,20 @@
-import React from "react";
+import React from 'react';
+
+import FiltersList from './components/FiltersList';
+import TicketsList from './components/TicketsList';
+
+import dayjs from 'dayjs';
+import 'dayjs/locale/ru';
 
 const App = () => {
-  return <h1>Whatever</h1>;
+  dayjs.locale('ru');
+
+  return (
+    <div className="container">
+      <FiltersList />
+      <TicketsList />
+    </div>
+  );
 };
 
 export default App;

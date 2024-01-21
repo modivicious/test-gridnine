@@ -1,0 +1,41 @@
+.timeline {
+  padding: 10px 20px;
+
+  &__inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .date {
+    color: #5289cc;
+  }
+
+  .time {
+    font-size: 18px;
+  }
+
+  .layovers {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    padding: 5px 0;
+    margin: 0 40px;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      z-index: -1;
+      width: 100%;
+      height: 1px;
+      background-color: #000;
+    }
+
+    &__count {
+      padding: 0 10px;
+      background-color: #fff;
+      color: #f3b374;
+    }
+  }
+}
