@@ -1,3 +1,21 @@
-.tickets {
+.ticketsWrapper {
   width: 600px;
+  padding: 20px 0;
+}
+
+.tickets {
+  width: 100%;
+}
+
+.showMoreButton {
+  display: flex;
+  margin: 0 auto;
+  padding: 10px 40px;
+  background-color: #efedee;
+}
+
+.notFound {
+  display: flex;
+  justify-content: center;
+  margin: 30px 0;
 }

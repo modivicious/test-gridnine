@@ -6,6 +6,7 @@ import { RootState } from '../../store';
 
 import Ticket from '../Ticket';
 import { Flight, FlightLeg, FlightSegment } from '../../types';
+import { TICKETS_NUMBER_TO_SHOW } from '../../constants';
 
 import {
   SORT,
@@ -75,6 +76,7 @@ const TicketsList = () => {
   );
 
   const [filteredFlights, setFilteredFlights] = useState<Flight[]>(flights);
+  const [numberToShow, setNumberToShow] = useState(TICKETS_NUMBER_TO_SHOW);
 
   const setCarriersData = (parsedFlights) => {
     const uniqueCarriers = parsedFlights.reduce((acc, flight) => {
@@ -152,14 +154,40 @@ const TicketsList = () => {
     setFilteredFlights(filteredFlights);
   }, [flights, sort, transfers, priceRange, carriers]);
 
+  const onShowMoreClick = () => {
+    setNumberToShow((prev) => prev + TICKETS_NUMBER_TO_SHOW);
+  };
+
   return (
-    <ul className={styles.tickets}>
-      {filteredFlights.map((flight: Flight, index) => (
-        <li className={styles.tickets__item} key={index}>
-          <Ticket flight={flight} />
-        </li>
-      ))}
-    </ul>
+    <div className={styles.ticketsWrapper}>
+      {filteredFlights.length ? (
+        <>
+          <ul className={styles.tickets}>
+            {filteredFlights
+              .slice(0, numberToShow)
+              .map((flight: Flight, index) => (
+                <li className={styles.tickets__item} key={index}>
+                  <Ticket flight={flight} />
+                </li>
+              ))}
+          </ul>
+
+          {numberToShow < filteredFlights.length && (
+            <button
+              className={styles.showMoreButton}
+              onClick={onShowMoreClick}
+              type="button"
+            >
+              Показать еще
+            </button>
+          )}
+        </>
+      ) : (
+        <div className={styles.notFound}>
+          К сожалению, по вашему запросу билетов не нашлось.
+        </div>
+      )}
+    </div>
   );
 };
 
