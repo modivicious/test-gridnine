@@ -1,23 +1,23 @@
-import React, { useState } from 'react';
+import React, { ReactNode, useState } from 'react';
 
 import styles from './Checkbox.module.scss';
 
-export interface CheckboxProps {
+export interface ICheckboxProps {
   id: string;
   label?: string;
-  customCaption?: any;
+  customCaption?: ReactNode;
   name: string;
-  value: string;
+  value: string | number;
   checked?: boolean;
-  onChange: (value: string) => void;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const Checkbox = (props: CheckboxProps) => {
+const Checkbox = (props: ICheckboxProps) => {
   const { id, label, customCaption, name, value, checked, onChange } = props;
 
   const [isChecked, setIsChecked] = useState(checked);
 
-  const onCheck = (e) => {
+  const onCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
     setIsChecked(!isChecked);
 
     if (onChange) {

@@ -1,4 +1,4 @@
-export interface FlightSegment {
+export interface IFlightSegment {
   date: string;
   city: string;
   airport: {
@@ -8,15 +8,15 @@ export interface FlightSegment {
   airline: string;
 }
 
-export interface FlightLeg {
+export interface IFlightLeg {
   duration: number;
-  layoversCount: number;
-  departure: FlightSegment;
-  arrival: FlightSegment;
+  transfersCount: number;
+  departure: IFlightSegment;
+  arrival: IFlightSegment;
 }
 
-export interface Flight {
+export interface IFlight {
   price: number;
-  departInfo: FlightLeg;
-  returnInfo: FlightLeg;
+  departInfo: IFlightLeg;
+  returnInfo: IFlightLeg;
 }

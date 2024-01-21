@@ -2,12 +2,12 @@ import React from 'react';
 
 import styles from './Header.module.scss';
 
-interface HeaderProps {
+interface IHeaderProps {
   airline: string;
   price: number;
 }
 
-const Header = (props: HeaderProps) => {
+const Header = (props: IHeaderProps) => {
   const { airline, price } = props;
 
   return (
@@ -21,6 +21,6 @@ const Header = (props: HeaderProps) => {
       </div>
     </div>
   );
-}
- 
+};
+
 export default Header;

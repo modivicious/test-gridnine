@@ -1,11 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { Flight } from '../../types';
+import { IFlight } from '../../types';
 
 export const FLIGHTS = 'flights';
 
-interface FlightsState {
-  [FLIGHTS]: Flight[];
+interface IFlightsState {
+  [FLIGHTS]: IFlight[];
 }
 
 const initialState = {
@@ -16,7 +16,7 @@ const flightsSlice = createSlice({
   name: 'flights',
   initialState: initialState,
   reducers: {
-    updateFlights(state: FlightsState, action: PayloadAction<Flight[]>) {
+    updateFlights(state: IFlightsState, action: PayloadAction<IFlight[]>) {
       state[FLIGHTS] = action.payload;
     },
   },

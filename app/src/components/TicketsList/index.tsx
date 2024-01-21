@@ -5,7 +5,7 @@ import { FLIGHTS, updateFlights } from '../../store/reducers/flights';
 import { RootState } from '../../store';
 
 import Ticket from '../Ticket';
-import { Flight, FlightLeg, FlightSegment } from '../../types';
+import { IFlight } from '../../types';
 import { TICKETS_NUMBER_TO_SHOW } from '../../constants';
 
 import {
@@ -19,49 +19,14 @@ import {
 } from '../../store/reducers/filters';
 
 import { getSortFunctionByName } from '../../utils/functions';
+import { getUniqueCarriers, parseFlights } from '../../utils/parseFlights';
 
 import styles from './TicketsList.module.scss';
-
-const getSegmentInfo = (
-  segment,
-  flightType: 'arrival' | 'departure'
-): FlightSegment => {
-  return {
-    date: segment[flightType + 'Date'],
-    city: segment[flightType + 'City']?.caption || '',
-    airport: {
-      name: segment[flightType + 'Airport'].caption,
-      iata: segment[flightType + 'Airport'].uid,
-    },
-    airline: segment.airline.caption,
-  };
-};
-
-const getLegInfo = (leg): FlightLeg => {
-  return {
-    duration: Number(leg.duration),
-    layoversCount: leg.segments.length - 1,
-    departure: getSegmentInfo(leg.segments[0], 'departure'),
-    arrival: getSegmentInfo(leg.segments[leg.segments.length - 1], 'arrival'),
-  };
-};
-
-const parseFlights = (flightsData): Flight[] => {
-  const flights = flightsData.result.flights;
-
-  return flights.map(
-    ({ flight }): Flight => ({
-      price: Number(flight.price.total.amount),
-      departInfo: getLegInfo(flight.legs[0]),
-      returnInfo: getLegInfo(flight.legs[1]),
-    })
-  );
-};
 
 const TicketsList = () => {
   const dispatch = useAppDispatch();
 
-  const flights = useAppSelector(
+  const flights: IFlight[] = useAppSelector(
     (state: RootState) => state.flightsSlice[FLIGHTS]
   );
   const sort = useAppSelector((state: RootState) => state.filtersSlice[SORT]);
@@ -75,35 +40,11 @@ const TicketsList = () => {
     (state: RootState) => state.filtersSlice[FILTER_BY_CARRIER]
   );
 
-  const [filteredFlights, setFilteredFlights] = useState<Flight[]>(flights);
+  const [filteredFlights, setFilteredFlights] = useState<IFlight[]>(flights);
   const [numberToShow, setNumberToShow] = useState(TICKETS_NUMBER_TO_SHOW);
 
   const setCarriersData = (parsedFlights) => {
-    const uniqueCarriers = parsedFlights.reduce((acc, flight) => {
-      const airline = flight?.departInfo?.departure?.airline;
-
-      if (!airline) {
-        return acc;
-      }
-
-      const findedCarrier = acc[airline];
-
-      if (findedCarrier) {
-        if (flight.price < findedCarrier.minPrice) {
-          findedCarrier.minPrice = flight.price;
-        }
-      } else {
-        acc[airline] = {
-          id: airline,
-          name: airline,
-          value: airline,
-          minPrice: flight.price,
-          checked: true,
-        };
-      }
-
-      return acc;
-    }, {});
+    const uniqueCarriers = getUniqueCarriers(parsedFlights);
 
     dispatch(setFilterByCarrier(uniqueCarriers));
   };
@@ -125,16 +66,19 @@ const TicketsList = () => {
 
   useEffect(() => {
     const activeSort =
-      Object.values(sort).find((sortType) => sortType.checked)?.value || '';
+      Object.values(sort).find((sortType) => sortType.checked)?.value ||
+      Object.values(sort)[0].value;
 
-    const checkedTransfers = Object.values(transfers)
+    const activeTransfers = Object.values(transfers)
       .filter((item) => item.checked)
       .map((item) => item.value);
 
-    let filteredFlights = [...flights].sort(getSortFunctionByName(activeSort));
+    let filteredFlights: IFlight[] = [...flights].sort(
+      getSortFunctionByName(activeSort)
+    );
 
     filteredFlights = filteredFlights.filter((flight) =>
-      checkedTransfers.includes(flight.departInfo.layoversCount)
+      activeTransfers.includes(flight.departInfo.transfersCount)
     );
 
     filteredFlights = filteredFlights.filter(
@@ -143,12 +87,12 @@ const TicketsList = () => {
         flight.price < priceRange[MAX_PRICE].value
     );
 
-    const checkedCarriers = Object.values(carriers)
+    const activeCarriers = Object.values(carriers)
       .filter((carrier) => carrier.checked)
       .map((carrier) => carrier.name);
 
     filteredFlights = filteredFlights.filter((flight) =>
-      checkedCarriers.includes(flight.departInfo.departure.airline)
+      activeCarriers.includes(flight.departInfo.departure.airline)
     );
 
     setFilteredFlights(filteredFlights);
@@ -165,7 +109,7 @@ const TicketsList = () => {
           <ul className={styles.tickets}>
             {filteredFlights
               .slice(0, numberToShow)
-              .map((flight: Flight, index) => (
+              .map((flight: IFlight, index) => (
                 <li className={styles.tickets__item} key={index}>
                   <Ticket flight={flight} />
                 </li>

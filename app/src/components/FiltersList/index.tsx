@@ -5,7 +5,6 @@ import RadioGroup from '../RadioGroup';
 import CheckboxGroup from '../CheckboxGroup';
 import InputNumber from '../InputNumber';
 import AirlineCaption from '../AirlineCaption';
-import { RadioProps } from '../Radio';
 
 import {
   SORT,
@@ -44,26 +43,29 @@ const FiltersList = () => {
   const carrierVariants = Object.values(carrierFilter).map((carrier) => ({
     ...carrier,
     customCaption: (
-      <AirlineCaption airline={carrier.name} price={`от ${carrier.minPrice} ₽`} />
+      <AirlineCaption
+        airline={carrier.name}
+        price={`от ${carrier.minPrice} ₽`}
+      />
     ),
   }));
 
-  const onSortChange = (newValue) => {
-    dispatch(updateSort(newValue));
+  const onSortChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(updateSort(e.target.value));
   };
 
-  const onTransferChange = (e) => {
+  const onTransferChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(updateTransfer(e.target.name));
   };
 
-  const onPriceChange = (e) => {
+  const onPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const name = e.target.name;
     const value = Number(e.target.value);
 
     dispatch(updatePriceRange({ name, value }));
   };
 
-  const onCarrierChange = (e) => {
+  const onCarrierChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const name = e.target.name;
 
     dispatch(updateFilterByCarrier(name));

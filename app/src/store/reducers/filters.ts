@@ -1,6 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { ASCENDING, DESCENDING, DURATION, START_MAX_PRICE, START_MIN_PRICE } from '../../constants';
+import {
+  ASCENDING,
+  DESCENDING,
+  DURATION,
+  START_MAX_PRICE,
+  START_MIN_PRICE,
+} from '../../constants';
 
 export const SORT = 'sort';
 export const FILTER_BY_TRANSFER = 'chooseByTransfer';
@@ -12,7 +18,53 @@ export const DIRECT = 'direct';
 export const MIN_PRICE = 'minPrice';
 export const MAX_PRICE = 'maxPrice';
 
-const initialState = {
+export interface ISort {
+  id: string;
+  name: string;
+  value: string;
+  label: string;
+  checked: boolean;
+}
+
+export interface ITransfer {
+  id: string;
+  name: string;
+  value: number;
+  label: string;
+  checked: boolean;
+}
+
+export interface IPrice {
+  id: string;
+  name: string;
+  label: string;
+  value: number;
+}
+
+export interface ICarrier {
+  id: string;
+  name: string;
+  value: string;
+  minPrice: number;
+  checked: boolean;
+}
+
+export interface FiltersState {
+  [SORT]: {
+    [name: string]: ISort;
+  };
+  [FILTER_BY_TRANSFER]: {
+    [name: string]: ITransfer;
+  };
+  [FILTER_BY_PRICE]: {
+    [name: string]: IPrice;
+  };
+  [FILTER_BY_CARRIER]: {
+    [name: string]: ICarrier;
+  };
+}
+
+const initialState: FiltersState = {
   [SORT]: {
     [ASCENDING]: {
       id: ASCENDING,
@@ -40,15 +92,15 @@ const initialState = {
     [DIRECT]: {
       id: DIRECT,
       name: DIRECT,
-      label: 'без пересадок',
       value: 0,
+      label: 'без пересадок',
       checked: true,
     },
     [ONE_TRANSFER]: {
       id: ONE_TRANSFER,
       name: ONE_TRANSFER,
-      label: '1 пересадка',
       value: 1,
+      label: '1 пересадка',
       checked: true,
     },
   },
@@ -73,24 +125,27 @@ const filtersSlice = createSlice({
   name: 'filters',
   initialState: initialState,
   reducers: {
-    updateSort(state, action) {
+    updateSort(state: FiltersState, action: PayloadAction<string>) {
       const currentActiveSort =
         Object.values(state[SORT]).find((sort) => sort.checked)?.value || '';
 
       state[SORT][currentActiveSort].checked = false;
       state[SORT][action.payload].checked = true;
     },
-    updateTransfer(state, action) {
+    updateTransfer(state: FiltersState, action: PayloadAction<string>) {
       state[FILTER_BY_TRANSFER][action.payload].checked =
         !state[FILTER_BY_TRANSFER][action.payload].checked;
     },
-    updatePriceRange(state, action) {
+    updatePriceRange(
+      state: FiltersState,
+      action: PayloadAction<{ name: string; value: number }>
+    ) {
       state[FILTER_BY_PRICE][action.payload.name].value = action.payload.value;
     },
-    setFilterByCarrier(state, action) {
+    setFilterByCarrier(state: FiltersState, action: PayloadAction<{[name: string]: ICarrier}>) {
       state[FILTER_BY_CARRIER] = action.payload;
     },
-    updateFilterByCarrier(state, action) {
+    updateFilterByCarrier(state: FiltersState, action: PayloadAction<string>) {
       state[FILTER_BY_CARRIER][action.payload].checked =
         !state[FILTER_BY_CARRIER][action.payload].checked;
     },

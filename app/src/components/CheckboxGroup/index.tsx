@@ -1,9 +1,12 @@
 import React, { FC } from 'react';
 
 import Checkbox from '../Checkbox';
-import { CheckboxProps } from '../Checkbox';
+import { ICheckboxProps } from '../Checkbox';
 
-const CheckboxGroup: FC<{ checkboxes: CheckboxProps[]; onChange }> = (props) => {
+const CheckboxGroup: FC<{
+  checkboxes: ICheckboxProps[];
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}> = (props) => {
   const { checkboxes, onChange } = props;
 
   return (

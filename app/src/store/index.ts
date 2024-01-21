@@ -1,7 +1,7 @@
-import { configureStore, combineReducers } from "@reduxjs/toolkit";
+import { configureStore, combineReducers } from '@reduxjs/toolkit';
 
-import filtersSlice from "./reducers/filters";
-import flightsSlice from "./reducers/flights";
+import filtersSlice from './reducers/filters';
+import flightsSlice from './reducers/flights';
 
 const rootReducer = combineReducers({
   filtersSlice,

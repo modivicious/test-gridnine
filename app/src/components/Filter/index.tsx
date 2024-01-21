@@ -1,13 +1,13 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import styles from './Filter.module.scss';
 
-interface FilterProps {
-  children: any;
+interface IFilterProps {
+  children: ReactNode;
   title: string;
 }
 
-const Filter = (props: FilterProps) => {
+const Filter = (props: IFilterProps) => {
   const { children, title } = props;
   return (
     <div className={styles.filter}>

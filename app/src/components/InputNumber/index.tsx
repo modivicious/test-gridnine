@@ -1,21 +1,21 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 
 import styles from './InputNumber.module.scss';
 
-interface InputNumberProps {
+interface IInputNumberProps {
   id: string;
   name: string;
   value: number;
-  label: string;
-  onChange: (e) => void;
+  label?: string;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const InputNumber = (props: InputNumberProps) => {
+const InputNumber = (props: IInputNumberProps) => {
   const { id, name, value, label, onChange } = props;
 
   const [numberValue, setNumberValue] = useState(value);
 
-  const onNumberChange = (e) => {
+  const onNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNumberValue(Number(e.target.value));
 
     if (onChange) {
@@ -39,5 +39,5 @@ const InputNumber = (props: InputNumberProps) => {
     </div>
   );
 };
- 
+
 export default InputNumber;

@@ -7,11 +7,11 @@ import Airline from './Airline';
 
 import { toHoursAndMinutes } from '../../utils/functions';
 
-import { FlightLeg } from '../../types';
+import { IFlightLeg } from '../../types';
 
 import styles from './FlightDetails.module.scss';
 
-const FlightDetails: FC<{ leg: FlightLeg }> = (props) => {
+const FlightDetails: FC<{ leg: IFlightLeg }> = (props) => {
   const { leg } = props;
 
   const departureTime = dayjs(leg.departure.date).format('HH:mm');
@@ -37,7 +37,7 @@ const FlightDetails: FC<{ leg: FlightLeg }> = (props) => {
         arrivalTime={arrivalTime}
         arrivalDate={arrivalDate}
         duration={duration}
-        layoversCount={leg.layoversCount}
+        transfersCount={leg.transfersCount}
       />
 
       <Airline airline={leg.arrival.airline} />

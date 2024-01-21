@@ -1,31 +1,26 @@
 import React from 'react';
 
+import { transfersToDisplay } from '../../../constants';
+
 import styles from './Timeline.module.scss';
 
-interface TimelineProps {
+interface ITimelineProps {
   arrivalTime: string;
   arrivalDate: string;
   departureTime: string;
   departureDate: string;
   duration: string;
-  layoversCount?: number;
+  transfersCount?: number;
 }
 
-const layoversToDisplay = [
-  'без пересадок',
-  '1 пересадка',
-  '2 пересадки',
-  '3 пересадки',
-];
-
-const Timeline = (props: TimelineProps) => {
+const Timeline = (props: ITimelineProps) => {
   const {
     departureTime,
     departureDate,
     arrivalTime,
     arrivalDate,
     duration,
-    layoversCount = 0,
+    transfersCount = 0,
   } = props;
 
   return (
@@ -42,9 +37,9 @@ const Timeline = (props: TimelineProps) => {
         </div>
       </div>
 
-      <div className={styles.layovers}>
-        <div className={styles.layovers__count}>
-          {layoversToDisplay[layoversCount]}
+      <div className={styles.transfers}>
+        <div className={styles.transfers__count}>
+          {transfersToDisplay[transfersCount]}
         </div>
       </div>
     </div>

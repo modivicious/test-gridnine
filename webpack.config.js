@@ -19,8 +19,8 @@ const plugins = [
   new CopyPlugin({
     patterns: [
       {
-        from: './app/*.json',
-        to: '[name].json',
+        from: './app/data/*.json',
+        to: './data/[name].json',
       },
     ],
   }),

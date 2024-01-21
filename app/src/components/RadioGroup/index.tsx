@@ -1,19 +1,25 @@
 import React, { FC, useState } from 'react';
 
 import Radio from '../Radio';
-import { RadioProps } from '../Radio';
+import { IRadioProps } from '../Radio';
 
-const RadioGroup: FC<{ radios: RadioProps[]; onChange }> = (props) => {
+const RadioGroup: FC<{
+  radios: IRadioProps[];
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}> = (props) => {
   const { radios, onChange } = props;
 
   const initialActiveValue =
-    radios.find((radio: RadioProps) => radio.checked)?.value || radios[0].value;
+    radios.find((radio: IRadioProps) => radio.checked)?.value || radios[0].value;
 
   const [activeValue, setActiveValue] = useState(initialActiveValue);
 
-  const onValueChange = (newValue: string) => {
-    setActiveValue(newValue);
-    onChange(newValue);
+  const onValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setActiveValue(e.target.value);
+
+    if (onChange) {
+      onChange(e);
+    }
   };
 
   return (
